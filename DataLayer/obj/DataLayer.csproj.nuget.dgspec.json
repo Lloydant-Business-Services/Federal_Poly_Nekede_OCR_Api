@@ -1,25 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\DataLayer.csproj": {}
+    "C:\\Users\\HP\\source\\repos\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\DataLayer.csproj": {}
   },
   "projects": {
-    "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\DataLayer.csproj": {
+    "C:\\Users\\HP\\source\\repos\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\DataLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\DataLayer.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\source\\repos\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\DataLayer.csproj",
         "projectName": "DataLayer",
-        "projectPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\DataLayer.csproj",
-        "packagesPath": "C:\\Users\\root\\.nuget\\packages\\",
-        "outputPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\obj\\",
+        "projectPath": "C:\\Users\\HP\\source\\repos\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\DataLayer.csproj",
+        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\HP\\source\\repos\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\root\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -127,7 +122,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
