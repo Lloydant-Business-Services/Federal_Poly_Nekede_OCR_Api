@@ -38,6 +38,8 @@ namespace DataLayer.Model
         public DbSet<StudentCarryOver> STUDENT_CARRY_OVER { get; set; }
         public DbSet<Programme> PROGRAMME{get; set; }
         public DbSet<OCRVetStore> OCR_VET_STORE{get; set; }
+        public DbSet<DepartmentOption> DEPARTMENT_OPTION { get; set; }
+
 
 
 
