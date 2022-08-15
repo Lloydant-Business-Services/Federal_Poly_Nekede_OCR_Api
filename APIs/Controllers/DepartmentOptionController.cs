@@ -27,23 +27,23 @@ namespace APIs.Controllers
         [HttpPost("[action]")]
         public async Task<ResponseModel> AddDepartmentOption(DepartmentOptionDto model) => await _service.AddDepartmentOption(model);
 
-        // [HttpGet("[action]")]
-        //public async Task<IEnumerable<DepartmentOptionDto>> GetDepartmentOptions()
-        //{
-        //    return await _context.DEPARTMENT_OPTION.Where(a => a.Active).Include(f => f.Name)
-        //        .Select(f => new DepartmentOptionDto
-        //        {
-        //            Name = f.Name,
-        //            DepartmentId = (long)f.DepartmentId,
-        //            Id = f.Id,
-        //            Active = f.Active,
-        //        })
-        //        .OrderBy(a => a.Name)
-        //        .ToListAsync();
-        //}
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<DepartmentOptionDto>> GetDepartmentOptions()
+        {
+            return await _context.DEPARTMENT_OPTION.Where(a => a.Active).Include(f => f.Name)
+                .Select(f => new DepartmentOptionDto
+                {
+                    Name = f.Name,
+                    DepartmentId = (long)f.DepartmentId,
+                    Id = f.Id,
+                    Active = f.Active,
+                })
+                .OrderBy(a => a.Name) //should I sort by the ID's or let the name be?
+                .ToListAsync();
+        }
 
-       // [HttpGet("{id}")]
-       // public DepartmentOption GetById(long id) => _service.GetById(id);
+        [HttpGet("{id}")]
+        public DepartmentOption GetById(long id) => _service.GetById(id);
 
         [HttpPost]
         public async Task<ResponseModel> UpdateDepartmentOption(DepartmentOptionDto model) => await _service.UpdateDepartmentOption(model);

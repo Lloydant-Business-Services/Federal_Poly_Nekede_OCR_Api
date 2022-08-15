@@ -29,7 +29,6 @@ namespace BusinessLayer.Services
             try
             {
                 DepartmentOption deptOption = new DepartmentOption();
-                //var d_slug = Utility.GenerateSlug(model.Name);
                 var doesExist = await _context.DEPARTMENT_OPTION.Where(dpo => dpo.Id == model.Id).FirstOrDefaultAsync();
                 if(doesExist != null)
                 {
@@ -40,7 +39,6 @@ namespace BusinessLayer.Services
                 deptOption.Name = model.Name;
                 deptOption.Active = true;
                 deptOption.DepartmentId = model.DepartmentId;
-               // dept.DateCreated = DateTime.Now;
                 _context.Add(deptOption);
                 await _context.SaveChangesAsync();
                 return response;
@@ -48,7 +46,7 @@ namespace BusinessLayer.Services
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 
@@ -60,22 +58,24 @@ namespace BusinessLayer.Services
                 if (deptOption == null)
                 {
                     throw new NullReferenceException("Department Option not found");
+                }
+                else
+                {
                     deptOption.Name = model.Name;
-                    deptOption.Active = true;
+                    deptOption.Active =true;
                     if (model.DepartmentId > 0)
                     {
                         deptOption.DepartmentId = model.DepartmentId;
                     }
                     _context.Update(deptOption);
                     await _context.SaveChangesAsync();
-                   
                 }
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 

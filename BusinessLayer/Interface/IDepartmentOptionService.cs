@@ -12,6 +12,5 @@ namespace BusinessLayer.Interface
         Task<ResponseModel> AddDepartmentOption(DepartmentOptionDto model);
         Task<ResponseModel> UpdateDepartmentOption(DepartmentOptionDto model);
         Task<ResponseModel> DeleteDepartmentOption(long id);
-        //Task<ResponseModel> GetDepartmentOptionsByDepartmentId(string departmentId, bool isAdmin);
     }
 }
