@@ -28,10 +28,7 @@ namespace BusinessLayer.Services
             try
             {
                 DepartmentOption deptOption = new DepartmentOption();
-                //var dpo_slug = Utility.GenerateSlug(model.Name);
                 var doesExist = await _context.DEPARTMENT_OPTION.Where(dpo => dpo.Id == model.Id).FirstOrDefaultAsync();
-
-               // var doesExist = await _context.DEPARTMENT_OPTION.Where(f => f.Name == dpo_slug).FirstOrDefaultAsync();
 
                 if (doesExist != null)
                 {
@@ -106,10 +103,10 @@ namespace BusinessLayer.Services
             }
         }
 
-        public async Task<IEnumerable<DepartmentOptionDto>> GetDepartmentOptionsByDepartmentId(long DepartmentId, bool isAdmin)
+        public async Task<IEnumerable<DepartmentOptionDto>> GetDepartmentOptionsByDepartmentId(long DepartmentId)
         {
-            if (isAdmin)
-            {
+            if (DepartmentId <= 0)
+                throw new Exception("Ënter department id");
                 return await _context.DEPARTMENT_OPTION.Where(d => d.DepartmentId == DepartmentId).Select(d => new DepartmentOptionDto
                 {
                     Name = d.Name,
@@ -118,19 +115,6 @@ namespace BusinessLayer.Services
                 })
                   .OrderBy(d => d.Name)
                   .ToListAsync();
-            }
-            else
-            {
-                return await _context.DEPARTMENT_OPTION.Where(d => d.DepartmentId == DepartmentId && d.Active)
-                    .Select(d => new DepartmentOptionDto
-                    {
-                        Name = d.Name,
-                        Id = d.Id,
-                        Active = d.Active,
-                    })
-                    .OrderBy(d => d.Name)
-                    .ToListAsync();
-            }
         }
     }
 }
