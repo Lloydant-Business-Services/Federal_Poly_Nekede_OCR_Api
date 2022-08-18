@@ -9,9 +9,9 @@ namespace DataLayer.Dtos
     {
         public string CourseCode { get; set; }
         public string CourseTitle { get; set; }
-        public long UserId { get; set; }
-        public long? LevelId { get; set; }
-        public long CourseAllocationId { get; set; }
-        public DateTime DateCreated { get; set; }
+       // public long UserId { get; set; }
+       // public long? LevelId { get; set; }
+       // public long CourseAllocationId { get; set; }
+        //public DateTime DateCreated { get; set; }
     }
 }
