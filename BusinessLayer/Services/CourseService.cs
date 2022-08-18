@@ -16,6 +16,7 @@ namespace BusinessLayer.Services
     {
         private readonly IConfiguration _configuration;
         private readonly FPNOOCRContext _context;
+        ResponseModel response = new ResponseModel();
 
         public CourseService(IConfiguration configuration, FPNOOCRContext context)
         {
@@ -31,10 +32,10 @@ namespace BusinessLayer.Services
                 var courseCodeSlug = Utility.GenerateSlug(courseDto.CourseCode);
                 var courseTitleSlug = Utility.GenerateSlug(courseDto.CourseTitle);
 
-                User user = await _context.USER.Where(s => s.Id == courseDto.UserId).FirstOrDefaultAsync();
+                //User user = await _context.USER.Where(s => s.Id == courseDto.UserId).FirstOrDefaultAsync();
                 Course doesCourseExist = await _context.COURSE.Where(c => c.CourseCodeSlug == courseCodeSlug && c.CourseTitleSlug == courseTitleSlug).FirstOrDefaultAsync();
-                if (user == null)
-                    throw new NullReferenceException("User was not found");
+                //if (user == null)
+                //    throw new NullReferenceException("User was not found");
                 if (doesCourseExist != null)
                 {
                     response.StatusCode = StatusCodes.Status208AlreadyReported;
@@ -78,11 +79,47 @@ namespace BusinessLayer.Services
                 response.Message = "success";
                 return response;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
         }
-   
+
+        public async Task<ResponseModel> DeleteCourse(long id)
+        {
+            try
+            {
+                Course cox = await _context.COURSE.Where(c => c.Id == id).FirstOrDefaultAsync();
+                if (cox != null)
+                {
+                    cox.Active = cox.Active ? false : true;
+                    _context.Update(cox);
+                    await _context.SaveChangesAsync();
+                    response.StatusCode = StatusCodes.Status200OK;
+                    response.Message = "deleted";
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public async Task<AddCourseDto> GetCourse(long id)
+        {
+            try
+            {
+                var course = await _context.COURSE.Where(c => c.Id == id).Select(c => new AddCourseDto()
+                {
+                    Id = c.Id,
+                    CourseCode = c.CourseCode,
+                    CourseTitle = c.CourseTitle
+                }).FirstOrDefaultAsync();
+                return course;
+            }
+            catch(Exception ex) { throw ex; }
+        }
     }
 }
