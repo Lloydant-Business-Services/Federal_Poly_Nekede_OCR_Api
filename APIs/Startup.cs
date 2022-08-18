@@ -47,6 +47,7 @@ namespace APIs
             services.AddScoped<ISchoolAdminService, SchoolAdminService>();
             services.AddScoped<IFacultyService, FacultySchoolService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
+            services.AddScoped<IDepartmentOptionService, DepartmentOptionService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<ISessionSemesterService, SessionSemesterService>();
             services.AddScoped<IReportingSevice, ReportingService>();

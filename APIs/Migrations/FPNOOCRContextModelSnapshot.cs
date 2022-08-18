@@ -83,6 +83,29 @@ namespace APIs.Migrations
                     b.ToTable("DEPARTMENT");
                 });
 
+            modelBuilder.Entity("DataLayer.Model.DepartmentOption", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("DepartmentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("DEPARTMENT_OPTION");
+                });
+
             modelBuilder.Entity("DataLayer.Model.FacultySchool", b =>
                 {
                     b.Property<long>("Id")
@@ -537,6 +560,16 @@ namespace APIs.Migrations
                         .IsRequired();
 
                     b.Navigation("FacultySchool");
+                });
+
+            modelBuilder.Entity("DataLayer.Model.DepartmentOption", b =>
+                {
+                    b.HasOne("DataLayer.Model.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("DataLayer.Model.OCRVetStore", b =>
