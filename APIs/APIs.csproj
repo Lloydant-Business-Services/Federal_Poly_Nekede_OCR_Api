@@ -9,6 +9,7 @@
 	</PropertyGroup>-->
   <ItemGroup>
     <Folder Include="Infrastructure\" />
+    <Folder Include="Resources\IncubatorView\" />
     <Folder Include="Resources\ResultVet\" />
   </ItemGroup>
 

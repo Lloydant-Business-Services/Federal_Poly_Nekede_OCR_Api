@@ -9008,11 +9008,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\BusinessLayer\\BusinessLayer.csproj",
+      "projectUniqueName": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\Federal_Poly_Nekede_OCR_Api\\BusinessLayer\\BusinessLayer.csproj",
       "projectName": "BusinessLayer",
-      "projectPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\BusinessLayer\\BusinessLayer.csproj",
+      "projectPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\Federal_Poly_Nekede_OCR_Api\\BusinessLayer\\BusinessLayer.csproj",
       "packagesPath": "C:\\Users\\root\\.nuget\\packages\\",
-      "outputPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\BusinessLayer\\obj\\",
+      "outputPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\Federal_Poly_Nekede_OCR_Api\\BusinessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -9034,8 +9034,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\DataLayer.csproj": {
-              "projectPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\DataLayer.csproj"
+            "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\DataLayer.csproj": {
+              "projectPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\DataLayer.csproj"
             }
           }
         }

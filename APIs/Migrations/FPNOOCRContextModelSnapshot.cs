@@ -188,7 +188,13 @@ namespace APIs.Migrations
                     b.Property<string>("DocumentUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("LevelId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("ProgrammeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("SemesterId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("SessionId")
@@ -198,7 +204,11 @@ namespace APIs.Migrations
 
                     b.HasIndex("DepartmentId");
 
+                    b.HasIndex("LevelId");
+
                     b.HasIndex("ProgrammeId");
+
+                    b.HasIndex("SemesterId");
 
                     b.HasIndex("SessionId");
 
@@ -580,11 +590,21 @@ namespace APIs.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("DataLayer.Model.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("DataLayer.Model.Programme", "Programme")
                         .WithMany()
                         .HasForeignKey("ProgrammeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("DataLayer.Model.Semester", "Semester")
+                        .WithMany()
+                        .HasForeignKey("SemesterId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DataLayer.Model.Session", "Session")
                         .WithMany()
@@ -594,7 +614,11 @@ namespace APIs.Migrations
 
                     b.Navigation("Department");
 
+                    b.Navigation("Level");
+
                     b.Navigation("Programme");
+
+                    b.Navigation("Semester");
 
                     b.Navigation("Session");
                 });

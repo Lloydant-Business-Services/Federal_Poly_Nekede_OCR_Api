@@ -3,6 +3,7 @@ using DataLayer.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,5 +33,10 @@ namespace APIs.Controllers
             var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, directory);
             return await _service.AddResultVetDocument(addResultVetDto, filePath, directory);
         }
+
+       
+        
+        [HttpGet("[action]")]
+        public async Task<ExcelSheetUploadAggregation> ProcessSheetForDisplayAndManipulation(long departmentId, long programmeId, long sessionId, long semesterId, long levelId) => await _service.ProcessSheetForDisplayAndManipulation(departmentId, programmeId, sessionId, semesterId, levelId);
     }
 }

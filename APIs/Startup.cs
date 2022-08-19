@@ -44,7 +44,6 @@ namespace APIs
          );
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ISchoolAdminService, SchoolAdminService>();
             services.AddScoped<IFacultyService, FacultySchoolService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IDepartmentOptionService, DepartmentOptionService>();

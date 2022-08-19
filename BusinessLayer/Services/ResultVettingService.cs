@@ -4,6 +4,8 @@ using DataLayer.Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,12 +20,29 @@ namespace BusinessLayer.Services
         private readonly IConfiguration _configuration;
         private readonly FPNOOCRContext _context;
         private readonly string baseUrl;
-        public ResultVettingService(IConfiguration configuration, FPNOOCRContext context)
+        private readonly IHostEnvironment _hostingEnvironment;
+        public ResultVettingService(IConfiguration configuration, FPNOOCRContext context, IHostEnvironment hostingEnvironment)
         {
             _configuration = configuration;
             _context = context;
             baseUrl = _configuration.GetValue<string>("Url:root");
+            _hostingEnvironment = hostingEnvironment;
 
+
+        }
+        public async Task<IEnumerable<DocumentPlaygroundDto>> GetPlaygroundDocument(long SessionId, long SemesterId, long ProgrammeId, long DepartmentId, long LevelId)
+        {
+            return await _context.OCR_VET_STORE.Where(x => x.SessionId == SessionId && x.SemesterId == SemesterId && x.ProgrammeId == ProgrammeId && x.DepartmentId == DepartmentId && x.LevelId == LevelId)
+                .Select(f => new DocumentPlaygroundDto
+                {
+                    SessionId = SessionId,
+                    SemesterId = SemesterId,
+                    ProgrammeId = ProgrammeId, 
+                    DepartmentId = DepartmentId,
+                    LevelId = LevelId,
+                    DocumentUrl = f.DocumentUrl,
+
+                }).ToListAsync();
         }
 
         public async Task<long> AddResultVetDocument(AddResultVetDto resultVetDto, string filePath, string directory)
@@ -38,11 +57,14 @@ namespace BusinessLayer.Services
 
                 var validateSession = await _context.SESSION.Where(x => x.Id == resultVetDto.SessionId).FirstOrDefaultAsync();
                 var validateDepartment = await _context.DEPARTMENT.Where(x => x.Id == resultVetDto.DepartmentId).FirstOrDefaultAsync();
+                var validateProgramme = await _context.PROGRAMME.Where(x => x.Id == resultVetDto.ProgrammeId).FirstOrDefaultAsync();
+                var validateLevel = await _context.LEVEL.Where(x => x.Id == resultVetDto.LevelId).FirstOrDefaultAsync();
+                var validateSemester = await _context.SEMESTER.Where(x => x.Id == resultVetDto.SemesterId).FirstOrDefaultAsync();
                 if (validateSession == null)
                     throw new Exception("session not found");
                 if (resultVetDto.ResultFile != null)
                 {
-                    string fileNamePrefix = validateSession.Name + "_" + validateDepartment.Name + "_";
+                    string fileNamePrefix = validateSession.Name + "_" + validateSemester.Name + "_" + validateProgramme.Name + "_" + validateDepartment.Name + "_" + validateLevel.Name;
                     docLink = await SaveResultSheetForVetting(resultVetDto.ResultFile, filePath, directory, fileNamePrefix);
                 }
 
@@ -65,6 +87,83 @@ namespace BusinessLayer.Services
                 throw new NullReferenceException("Enter session and department");
             }
             return 0;
+        }
+        public async Task<ExcelSheetUploadAggregation> ProcessSheetForDisplayAndManipulation(long departmentId, long programmeId, long sessionId, long semesterId, long levelId)
+        {
+            ExcelSheetUploadAggregation uploadAggregation = new ExcelSheetUploadAggregation();
+            try
+            {
+                var getIncubatorDocument = await _context.OCR_VET_STORE.Where(x => x.SessionId == sessionId && x.SemesterId == semesterId && x.LevelId == levelId && x.DepartmentId == departmentId).FirstOrDefaultAsync();
+                var docFile = baseUrl + getIncubatorDocument.DocumentUrl;
+
+                //string fileName = string.Format("{0}{1}", givenFileName + "_", extType);
+
+                var directory = Path.Combine("Resources", "ResultVet");
+                var directoryPreview = Path.Combine("Resources", "IncubatorView");
+                var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, directory);
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                var fullPath = Path.Combine(directory, getIncubatorDocument.DocumentUrl);
+               fullPath = getIncubatorDocument.DocumentUrl;
+
+                FileInfo fileExists = new FileInfo(fullPath);
+                var filePathTemp = Path.GetTempFileName();
+
+               // FileStream file = fileExists.CopyTo();
+                string path2 = Path.GetTempFileName();
+                //var file = new FileInfo(fullPath);
+                //FileStream file = null;
+                //IFormFile file = (IFormFile)fileExists.Open;
+
+                if (fileExists.Exists)
+                {
+                    //byte[] data = File.ReadAllBytes(filePath);
+                    //string fileName = Path.GetFileName(filePath);
+                    
+                   // file = fileExists;
+
+                }
+                //filePath = Path.Combine(_hostingEnvironment.ContentRootPath, directoryPreview);
+                //var filePathTemp = Path.GetTempFileName();
+                using (var stream = File.OpenRead(fullPath))
+                {
+                    //await file.(stream);
+                    ExcelPackage package = new ExcelPackage(stream);
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                    if (worksheet != null)
+                    {
+                        //two rows space from the top to allow for the headers
+                        int totalRows = worksheet.Dimension.Rows;
+
+                        for (int i = 2; i <= totalRows; i++)
+                        {
+                            StudentUploadModel studentDetail = new StudentUploadModel();
+                            int serialNumber = Convert.ToInt32(worksheet.Cells[i, 1].Value);
+                            studentDetail.Name = worksheet.Cells[i, 2].Value != null ? worksheet.Cells[i, 2].Value.ToString() : " ";
+                            studentDetail.RegistrationNumber = worksheet.Cells[i, 3].Value != null ? worksheet.Cells[i, 3].Value.ToString() : " ";
+                            studentDetail.Course1 = worksheet.Cells[i, 4].Value != null ? worksheet.Cells[i, 4].Value.ToString() : " ";
+                            studentDetail.Course2 = worksheet.Cells[i, 5].Value != null ? worksheet.Cells[i, 5].Value.ToString() : " ";
+                            studentDetail.Course3 = worksheet.Cells[i, 6].Value != null ? worksheet.Cells[i, 6].Value.ToString() : " ";
+
+                            // studentList.Add(studentDetail);
+                        }
+
+                        //if (studentList?.Count() > 0)
+                        //{
+
+                        //    uploadAggregation = await _service.ProcessStudentUpload(studentList, departmentId);
+                        //}
+                    }
+                }
+                //long size = file.Length;
+             
+
+
+                    throw new NullReferenceException("Invalid Upload Sheet");
+            }
+            catch (Exception ex) { throw ex; }
         }
 
         public async Task<string> SaveResultSheetForVetting(IFormFile file, string filePath, string directory, string givenFileName)

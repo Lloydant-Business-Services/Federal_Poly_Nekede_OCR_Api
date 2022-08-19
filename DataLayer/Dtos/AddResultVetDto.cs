@@ -7,9 +7,11 @@ namespace DataLayer.Dtos
 {
     public class AddResultVetDto
     {
-         public long SessionId { get; set; }
+        public long SessionId { get; set; }
         public long DepartmentId { get; set; }
         public long ProgrammeId { get; set; }
+        public long LevelId { get; set; }
+        public long SemesterId { get; set; }
         public IFormFile ResultFile { get; set; }
     }
 }
