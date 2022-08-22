@@ -4,7 +4,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>\\Mac\Home\Documents\Result_Archive_Nekede</_PublishTargetUrl>
-    <History>True|2022-07-05T10:33:21.8104470Z;</History>
+    <_PublishTargetUrl>\\Mac\Home\Documents\Fpno_OCR_Deploy-main</_PublishTargetUrl>
+    <History>True|2022-08-22T04:06:39.5465311Z;True|2022-08-21T03:48:26.1404744+01:00;True|2022-08-21T03:40:04.2960953+01:00;True|2022-08-20T16:43:07.8546973+01:00;True|2022-08-20T12:08:37.1309934+01:00;True|2022-08-20T12:07:09.0297001+01:00;True|2022-07-05T11:33:21.8104470+01:00;</History>
   </PropertyGroup>
 </Project>

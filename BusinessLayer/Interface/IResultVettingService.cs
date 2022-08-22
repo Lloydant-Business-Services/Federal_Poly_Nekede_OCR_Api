@@ -9,6 +9,6 @@ namespace BusinessLayer.Interface
     public interface IResultVettingService
     {
         Task<long> AddResultVetDocument(AddResultVetDto resultVetDto, string filePath, string directory);
-        Task<ExcelSheetUploadAggregation> ProcessSheetForDisplayAndManipulation(long departmentId, long programmeId, long sessionId, long semesterId, long levelId);
+        Task<OcrEvaluationDto> ProcessSheetForDisplayAndManipulation(long departmentId, long programmeId, long sessionId, long semesterId, long levelId);
     }
 }

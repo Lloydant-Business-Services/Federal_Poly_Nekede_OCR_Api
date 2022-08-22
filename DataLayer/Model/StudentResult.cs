@@ -30,6 +30,7 @@ namespace DataLayer.Model
         public long ProgrammeId { get; set; }
         public long DepartmentId { get; set; }
         public long SessionId { get; set; }
+        public StudentCarryOver StudentCarryOver { get; set; }
 
         [ForeignKey("ProgrammeId")]
         public Programme Programme { get; set; }
