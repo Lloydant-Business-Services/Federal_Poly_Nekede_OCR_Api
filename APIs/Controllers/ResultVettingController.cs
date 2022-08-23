@@ -38,5 +38,7 @@ namespace APIs.Controllers
         
         [HttpGet("[action]")]
         public async Task<OcrEvaluationDto> ProcessSheetForDisplayAndManipulation(long departmentId, long programmeId, long sessionId, long semesterId, long levelId) => await _service.ProcessSheetForDisplayAndManipulation(departmentId, programmeId, sessionId, semesterId, levelId);
+        [HttpPost("[action]")]
+        public async Task<FailDetailDto> SavedAndVerifyResult(VerifyResultDto dto) => await _service.SavedAndVerifyResult(dto);
     }
 }

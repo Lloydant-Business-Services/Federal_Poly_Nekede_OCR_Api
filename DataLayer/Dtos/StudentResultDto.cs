@@ -11,6 +11,7 @@ namespace DataLayer.Dtos
     }
     public class StudentResultDto
     {
+        public string SN { get; set; }
         public string Name { get; set; }
         public string RegistrationNumber { get; set; }
         public string Course1 { get; set; }
@@ -53,6 +54,7 @@ namespace DataLayer.Dtos
         public string title { get; set; }
         public string dataIndex { get; set; }
         public string key { get; set; }
+        public string unit { get; set; }
     }
 
 

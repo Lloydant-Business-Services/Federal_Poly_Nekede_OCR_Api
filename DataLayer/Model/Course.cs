@@ -15,6 +15,8 @@ namespace DataLayer.Model
         public string CourseTitle { get; set; }
         [MaxLength(100)]
         public string CourseTitleSlug { get; set; }
+        public string CourseUnit { get; set; }
+
         public DateTime DateCreated { get; set; }
         public bool Active { get; set; }
     }

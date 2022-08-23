@@ -21,12 +21,14 @@ namespace BusinessLayer.Services
         private readonly FPNOOCRContext _context;
         private readonly string baseUrl;
         private readonly IHostEnvironment _hostingEnvironment;
-        public ResultVettingService(IConfiguration configuration, FPNOOCRContext context, IHostEnvironment hostingEnvironment)
+        private readonly ICourseService _courseService;
+        public ResultVettingService(IConfiguration configuration, FPNOOCRContext context, IHostEnvironment hostingEnvironment, ICourseService courseService)
         {
             _configuration = configuration;
             _context = context;
             baseUrl = _configuration.GetValue<string>("Url:root");
             _hostingEnvironment = hostingEnvironment;
+            _courseService = courseService;
 
 
         }
@@ -137,7 +139,7 @@ namespace BusinessLayer.Services
                         for (int i = 2; i <= totalRows; i++)
                         {
                             StudentResultDto studentDetail = new StudentResultDto();
-                            //string serialNumber = "S/N";
+                            studentDetail.SN = i.ToString();
                             studentDetail.RegistrationNumber = worksheet.Cells[i, 2].Value != null ? worksheet.Cells[i, 2].Value.ToString() : "-"; ;
                             studentDetail.Name = worksheet.Cells[i, 3].Value != null ? worksheet.Cells[i, 3].Value.ToString() : "-";
                             //courses
@@ -203,6 +205,160 @@ namespace BusinessLayer.Services
             }
             catch (Exception ex) { throw ex; }
         }
+        public async Task<FailDetailDto> SavedAndVerifyResult(VerifyResultDto dto)
+        {
+            try
+            {
+                FailDetailDto statusDto = new FailDetailDto();
+               
+                //Course courseEntity = null;
+                //int indexTracker = 0;
+                List<long> courseIds = new List<long>();
+                List<string> courseGrades = new List<string>();
+                var rowCount = dto.DataList.Count();
+                if (dto.DataList.Any() && dto.StudentResultHeaderDto.Any())
+                {
+                    //if(dto.DataList.Count() == dto.StudentResultHeaderDto.Count())
+                    if (dto.DataList.Count() > 0)
+                    {
+                        var extractRegNumber = dto.DataList[1].Trim();
+                        var doesExist = await _context.STUDENT_RESULT.Where(x => x.RegistrationNumber == extractRegNumber && x.SessionId == dto.SessionId && x.SemesterId == dto.SemesterId).FirstOrDefaultAsync();
+                        if (doesExist == null)
+                        {
+                            StudentResult studentResult = new StudentResult()
+                            {
+                                RegistrationNumber = dto.DataList[1],
+                                Name = dto.DataList[2],
+                                DepartmentId = dto.DepartmentId,
+                                ProgrammeId = dto.ProgrammeId,
+                                SessionId = dto.SessionId,
+                                DateAdded = DateTime.Now,
+                                SemesterId = dto.SemesterId,
+                                LevelId = dto.LevelId,
+                                Remark = dto.DataList[rowCount - 1],
+                                GPA = dto.DataList[rowCount - 2],
+                                Total = dto.DataList[rowCount - 3],
+                                GPABF = dto.DataList[rowCount - 4],
+                            };
+                            _context.Add(studentResult);
+                            await _context.SaveChangesAsync();
+
+                            var CourseId1 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[3].title);
+                            var CourseId2 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[4].title);
+                            var CourseId3 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[5].title);
+                            var CourseId4 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[6].title);
+                            var CourseId5 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[7].title);
+                            var CourseId6 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[8].title);
+                            var CourseId7 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[9].title);
+                            var CourseId8 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[10].title);
+                            var CourseId9 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[11].title);
+                            var CourseId10 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[12].title);
+                            var CourseId11 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[13].title);
+                            var CourseId12 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[14].title);
+                            var CourseId13 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[15].title);
+                            var CourseId14 = await ResolveAndReturnCourseId(dto.StudentResultHeaderDto[16].title);
+                            courseIds.Add(CourseId1);
+                            courseIds.Add(CourseId2);
+                            courseIds.Add(CourseId3);
+                            courseIds.Add(CourseId4);
+                            courseIds.Add(CourseId5);
+                            courseIds.Add(CourseId6);
+                            courseIds.Add(CourseId7);
+                            courseIds.Add(CourseId8);
+                            courseIds.Add(CourseId9);
+                            courseIds.Add(CourseId10);
+                            courseIds.Add(CourseId11);
+                            courseIds.Add(CourseId12);
+                            courseIds.Add(CourseId13);
+                            courseIds.Add(CourseId14);
+
+                            var indexTracker = 2;
+                            foreach (var courseId in courseIds)
+                            {
+                                indexTracker++;
+                                PersonCourseGrade courseGrade = new PersonCourseGrade()
+                                {
+                                    StudentResultId = studentResult.Id,
+                                    Grade = dto.DataList[indexTracker],
+                                    CourseId = courseId,
+                                };
+                                _context.Add(courseGrade);
+                                await _context.SaveChangesAsync();
+                            }
+
+                            
+                        }
+                        else
+                        {
+                            FailDetailDto failDetailDto = new FailDetailDto()
+                            {
+                                Name = dto.DataList[2],
+                                RegNumber = dto.DataList[1],
+                                Reason = "Record has been previously added",
+                                Succeeded = false
+                            };
+                            return failDetailDto;
+                            //statusDto.SaveDetailDto = failDetailDto;
+                        }
+                        
+
+                    }
+                    else
+                    {
+                        throw new Exception("Oops! something went wrong");
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+                return statusDto;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<long> ResolveAndReturnCourseId(string courseCode)
+        {
+            if (!string.IsNullOrEmpty(courseCode))
+            {
+                ResponseModel response = new ResponseModel();
+                var courseTitleSlug = Utility.GenerateSlug(courseCode);
+                var splitString = courseCode.Split("|");
+                var courseUnit = "-";
+                if (splitString.Any() && splitString.Count() == 2)
+                {
+                    courseCode = Utility.GenerateSlug(splitString[0]);
+                    courseUnit = Utility.GenerateSlug(splitString[1]);
+                }
+                else
+                {
+                    courseCode = Utility.GenerateSlug(courseCode);
+                }
+                Course doesCourseExist = await _context.COURSE.Where(c => c.CourseCodeSlug == courseCode).FirstOrDefaultAsync();
+                if (doesCourseExist != null)
+                {
+                    return doesCourseExist.Id;
+                }
+                Course course = new Course()
+                {
+                    CourseTitle = "-",
+                    CourseCode = courseCode.ToUpper(),
+                    CourseCodeSlug = Utility.GenerateSlug(courseCode),
+                    CourseTitleSlug = "-",
+                    DateCreated = DateTime.Now,
+                    CourseUnit = courseUnit,
+                    Active = true
+                };
+                _context.Add(course);
+                await _context.SaveChangesAsync();
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Message = "success";
+                return course.Id;
+            }
+            return 0;
+        }
         public List<StudentResultHeaderDto> ResolveHeaderData(ExcelWorksheet worksheet, int totalColumns)
         {
             List<StudentResultHeaderDto> headerList = new List<StudentResultHeaderDto>();
@@ -211,6 +367,16 @@ namespace BusinessLayer.Services
             {
                 StudentResultHeaderDto headerDto = new StudentResultHeaderDto();
                 StudentResultDto studentDetail = new StudentResultDto();
+
+                studentDetail.SN = worksheet.Cells[1, 1].Value != null ? worksheet.Cells[1, 1].Value.ToString() : "-";
+                headerDto = new StudentResultHeaderDto()
+                {
+                    title = "SN",
+                    key = "sn",
+                    dataIndex = "sn"
+                };
+                headerList.Add(headerDto);
+
                 studentDetail.RegistrationNumber = worksheet.Cells[1, 2].Value != null ? worksheet.Cells[1, 2].Value.ToString() : "-";
                 headerDto = new StudentResultHeaderDto()
                 {

@@ -22,7 +22,7 @@ namespace APIs.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ResponseModel> AddCourse(AddCourseDto courseDto) => await _service.AddCourse(courseDto);
+        public async Task<Course> AddCourse(AddCourseDto courseDto) => await _service.AddCourse(courseDto);
 
         [HttpPost]
         public async Task<ResponseModel> UpdateCourseDetail(AddCourseDto dto) => await _service.UpdateCourseDetail(dto);
@@ -32,5 +32,6 @@ namespace APIs.Controllers
 
         [HttpGet("{id}")]
         public async Task<AddCourseDto> GetCourse(long id) => await _service.GetCourse(id);
+
     }
 }
