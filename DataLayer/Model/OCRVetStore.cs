@@ -9,6 +9,10 @@ namespace DataLayer.Model
         public virtual Session Session { get; set; }
         public virtual Department Department { get; set; }
         public virtual Programme Programme { get; set; }
+        public virtual Semester Semester { get; set; }
+        public virtual Level Level { get; set; }
+        public long? SemesterId { get; set; }
+        public long? LevelId { get; set; }
         public long SessionId { get; set; }
         public long DepartmentId { get; set; }
         public long ProgrammeId { get; set; }

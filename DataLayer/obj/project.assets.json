@@ -8975,11 +8975,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\DataLayer.csproj",
+      "projectUniqueName": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\DataLayer.csproj",
       "projectName": "DataLayer",
-      "projectPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\DataLayer.csproj",
+      "projectPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\DataLayer.csproj",
       "packagesPath": "C:\\Users\\root\\.nuget\\packages\\",
-      "outputPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\ResultArchiveNekede\\DataLayer\\obj\\",
+      "outputPath": "Z:\\Users\\godspeedmiracle\\Miracle\\Portals\\Federal_Poly_Nekede_OCR_Api\\DataLayer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

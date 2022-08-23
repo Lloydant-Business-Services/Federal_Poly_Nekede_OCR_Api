@@ -10,7 +10,7 @@ namespace BusinessLayer.Interface
 {
     public interface ICourseService
     {
-        Task<ResponseModel> AddCourse(AddCourseDto courseDto);
+        Task<Course> AddCourse(AddCourseDto courseDto);
         Task<ResponseModel> UpdateCourseDetail(AddCourseDto dto);
         Task<ResponseModel> DeleteCourse(long id);  
         Task<AddCourseDto> GetCourse(long id);

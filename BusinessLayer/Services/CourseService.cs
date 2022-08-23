@@ -24,7 +24,7 @@ namespace BusinessLayer.Services
             _context = context;
         }
 
-        public async Task<ResponseModel> AddCourse(AddCourseDto courseDto)
+        public async Task<Course> AddCourse(AddCourseDto courseDto)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace BusinessLayer.Services
                 {
                     response.StatusCode = StatusCodes.Status208AlreadyReported;
                     response.Message = "Course Already Added";
-                    return response;
+                    return doesCourseExist;
                 }
                 Course course = new Course()
                 {
@@ -49,18 +49,20 @@ namespace BusinessLayer.Services
                     CourseCodeSlug = Utility.GenerateSlug(courseDto.CourseCode),
                     CourseTitleSlug = Utility.GenerateSlug(courseDto.CourseTitle),
                     DateCreated = DateTime.Now,
+                    CourseUnit = courseDto.Unit,
                     Active = true
                 };
                 _context.Add(course);
                 await _context.SaveChangesAsync();
                 response.StatusCode = StatusCodes.Status200OK;
                 response.Message = "success";
-                return response;
+                return course;
             }
             catch(Exception ex)
             {
                 throw ex;
             }
+        
         }
 
         public async Task<ResponseModel> UpdateCourseDetail(AddCourseDto dto)

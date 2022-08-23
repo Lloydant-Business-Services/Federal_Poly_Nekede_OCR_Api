@@ -3,6 +3,7 @@ using DataLayer.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,5 +33,12 @@ namespace APIs.Controllers
             var filePath = Path.Combine(_hostingEnvironment.ContentRootPath, directory);
             return await _service.AddResultVetDocument(addResultVetDto, filePath, directory);
         }
+
+       
+        
+        [HttpGet("[action]")]
+        public async Task<OcrEvaluationDto> ProcessSheetForDisplayAndManipulation(long departmentId, long programmeId, long sessionId, long semesterId, long levelId) => await _service.ProcessSheetForDisplayAndManipulation(departmentId, programmeId, sessionId, semesterId, levelId);
+        [HttpPost("[action]")]
+        public async Task<FailDetailDto> SavedAndVerifyResult(VerifyResultDto dto) => await _service.SavedAndVerifyResult(dto);
     }
 }

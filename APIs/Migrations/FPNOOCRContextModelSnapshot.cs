@@ -45,6 +45,9 @@ namespace APIs.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("CourseUnit")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -188,7 +191,13 @@ namespace APIs.Migrations
                     b.Property<string>("DocumentUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("LevelId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("ProgrammeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("SemesterId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("SessionId")
@@ -198,7 +207,11 @@ namespace APIs.Migrations
 
                     b.HasIndex("DepartmentId");
 
+                    b.HasIndex("LevelId");
+
                     b.HasIndex("ProgrammeId");
+
+                    b.HasIndex("SemesterId");
 
                     b.HasIndex("SessionId");
 
@@ -243,6 +256,34 @@ namespace APIs.Migrations
                     b.HasIndex("GenderId");
 
                     b.ToTable("PERSON");
+                });
+
+            modelBuilder.Entity("DataLayer.Model.PersonCourseGrade", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Grade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("StudentResultId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("StudentResultId");
+
+                    b.ToTable("PERSON_COURSE_GRADE");
                 });
 
             modelBuilder.Entity("DataLayer.Model.Programme", b =>
@@ -358,52 +399,15 @@ namespace APIs.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Course1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course10")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course11")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course12")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course13")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course14")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course5")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course6")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course7")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course8")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course9")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("StudentResultId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentResultId");
 
@@ -417,48 +421,6 @@ namespace APIs.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Course1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course10")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course11")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course12")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course13")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course14")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course5")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course6")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course7")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course8")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Course9")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
@@ -471,6 +433,9 @@ namespace APIs.Migrations
                     b.Property<string>("GPABF")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("LevelId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -482,6 +447,9 @@ namespace APIs.Migrations
 
                     b.Property<string>("Remark")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("SemesterId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("SessionId")
                         .HasColumnType("bigint");
@@ -580,11 +548,21 @@ namespace APIs.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("DataLayer.Model.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("DataLayer.Model.Programme", "Programme")
                         .WithMany()
                         .HasForeignKey("ProgrammeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("DataLayer.Model.Semester", "Semester")
+                        .WithMany()
+                        .HasForeignKey("SemesterId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DataLayer.Model.Session", "Session")
                         .WithMany()
@@ -594,7 +572,11 @@ namespace APIs.Migrations
 
                     b.Navigation("Department");
 
+                    b.Navigation("Level");
+
                     b.Navigation("Programme");
+
+                    b.Navigation("Semester");
 
                     b.Navigation("Session");
                 });
@@ -607,6 +589,25 @@ namespace APIs.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Gender");
+                });
+
+            modelBuilder.Entity("DataLayer.Model.PersonCourseGrade", b =>
+                {
+                    b.HasOne("DataLayer.Model.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DataLayer.Model.StudentResult", "StudentResult")
+                        .WithMany()
+                        .HasForeignKey("StudentResultId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("StudentResult");
                 });
 
             modelBuilder.Entity("DataLayer.Model.SessionSemester", b =>
@@ -630,11 +631,19 @@ namespace APIs.Migrations
 
             modelBuilder.Entity("DataLayer.Model.StudentCarryOver", b =>
                 {
+                    b.HasOne("DataLayer.Model.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("DataLayer.Model.StudentResult", "StudentResult")
                         .WithMany()
                         .HasForeignKey("StudentResultId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Course");
 
                     b.Navigation("StudentResult");
                 });
