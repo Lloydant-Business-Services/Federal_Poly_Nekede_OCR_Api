@@ -19,6 +19,12 @@ namespace DataLayer.Model
         public long SemesterId { get; set; }
         public long LevelId { get; set; }
 
+        [ForeignKey("LevelId")]
+        public Level Level { get; set; }
+
+        [ForeignKey("SemesterId")]
+        public Semester Semester { get; set; }
+
         [ForeignKey("ProgrammeId")]
         public Programme Programme { get; set; }
         [ForeignKey("DepartmentId")]

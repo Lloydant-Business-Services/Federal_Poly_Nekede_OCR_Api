@@ -11,5 +11,7 @@ namespace BusinessLayer.Interface
         Task<long> AddResultVetDocument(AddResultVetDto resultVetDto, string filePath, string directory);
         Task<OcrEvaluationDto> ProcessSheetForDisplayAndManipulation(long departmentId, long programmeId, long sessionId, long semesterId, long levelId);
         Task<FailDetailDto> SavedAndVerifyResult(VerifyResultDto dto);
+
+        Task<GetStudentDetailDto> GetStudentDetails(string RegistrationNumber, long SessionId, long SemesterId);
     }
 }

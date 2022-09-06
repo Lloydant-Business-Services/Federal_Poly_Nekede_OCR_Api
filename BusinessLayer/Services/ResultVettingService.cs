@@ -47,6 +47,39 @@ namespace BusinessLayer.Services
                 }).ToListAsync();
         }
 
+        public async Task<GetStudentDetailDto> GetStudentDetails(string RegistrationNumber, long SessionId, long SemesterId)
+        {
+            try
+            {
+                GetStudentDetailDto returnStudentDto = new GetStudentDetailDto();
+               
+                var studentResult = await _context.STUDENT_RESULT.Where(x => x.RegistrationNumber == RegistrationNumber && x.SessionId == SessionId && x.SemesterId == SemesterId).Include(x => x.Department).Include(x => x.Programme).Include(x => x.Session).Include(x => x.Level).Include(x => x.Semester).FirstOrDefaultAsync();
+                if (studentResult?.Id>0)
+                {
+                    var personGrade = await _context.PERSON_COURSE_GRADE.Where(sid => sid.StudentResultId == studentResult.Id).Include(x => x.Course)
+                        .Select(f => new ResultGradeDto
+                        {
+                            CourseTitle = f.Course.CourseTitle,
+                            CourseCode = f.Course.CourseCode,
+                            Grade = f.Grade
+                        }).ToListAsync();
+
+                    returnStudentDto.RegistrationNumber = studentResult.RegistrationNumber;
+                    returnStudentDto.StudentName = studentResult.Name;
+                    returnStudentDto.resultGradeList = new List<ResultGradeDto>();
+                    returnStudentDto.resultGradeList.AddRange(personGrade);
+                }
+
+                return returnStudentDto;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
+        }
+
         public async Task<long> AddResultVetDocument(AddResultVetDto resultVetDto, string filePath, string directory)
         {
             if (resultVetDto?.SessionId > 0 && resultVetDto?.DepartmentId > 0)
